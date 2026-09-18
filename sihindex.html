@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#06111f" />
+    <title>CycloneLens | Tropical Operations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="CycloneLens home"><span class="brand-mark">◉</span><span>CYCLONE<span>LENS</span></span></a>
+        <nav>
+          <a class="nav-link active" href="#overview">Overview</a>
+          <a class="nav-link" href="#systems">Active systems <b id="systemCount">4</b></a>
+          <a class="nav-link" href="#model">Fusion model</a>
+          <a class="nav-link" href="#sources">Data ingestion</a>
+        </nav>
+        <div class="basin-control"><p class="eyebrow">MONITORED DOMAIN</p><strong>North Indian Ocean</strong><span>Arabian Sea · Bay of Bengal</span></div>
+        <div class="sidebar-status"><i></i> DATA FUSION ONLINE</div>
+      </aside>
+      <main id="top">
+        <header class="topbar"><div><p class="eyebrow">TROPICAL CYCLONE INTELLIGENCE</p><h1>Operations console</h1></div><div class="topbar-actions"><span id="updatedAt" class="timestamp">SYNCING</span><button id="uploadButton" class="button secondary">Upload NetCDF</button><input id="netcdfInput" type="file" accept=".nc,.nc4,.cdf" hidden /></div></header>
+        <section id="overview" class="kpi-grid" aria-label="Operational summary">
+          <article class="metric"><span>Active systems</span><strong id="kpiSystems">—</strong><small>North Indian Ocean</small></article>
+          <article class="metric danger"><span>Critical alerts</span><strong id="kpiAlerts">—</strong><small>Action required</small></article>
+          <article class="metric"><span>Sources online</span><strong id="kpiSources">—</strong><small>Live + synchronized</small></article>
+          <article class="metric"><span>Fusion latency</span><strong id="kpiLatency">—</strong><small>Latest processing cycle</small></article>
+        </section>
+        <section class="layout-primary">
+          <article class="panel map-panel" aria-labelledby="mapTitle">
+            <div class="panel-head"><div><p class="eyebrow">DEMONSTRATION TRACK FUSION</p><h2 id="mapTitle">Indian Ocean watch</h2></div><div class="legend"><span><i class="past"></i>Observed</span><span><i class="forecast"></i>Forecast</span></div></div>
+            <div id="map" class="radar-map" role="img" aria-label="Indian Ocean map showing four cyclone tracks and forecast trajectories"></div>
+            <div id="systemCards" class="system-cards" aria-label="Cyclone selection"></div>
+          </article>
+          <article id="systems" class="panel system-panel" aria-labelledby="focusTitle">
+            <div class="panel-head"><div><p class="eyebrow">FOCUSED SYSTEM</p><h2 id="focusTitle">BIPARJOY</h2></div><span id="riskBadge" class="risk high">HIGH RISK</span></div>
+            <div class="system-readout"><div><span>Max sustained wind</span><strong id="windValue">105 <small>kt</small></strong></div><div><span>Central pressure</span><strong id="pressureValue">956 <small>hPa</small></strong></div></div>
+            <dl class="system-details"><div><dt>IMD classification</dt><dd id="classValue">VSCS</dd></div><div><dt>Motion</dt><dd id="motionValue">NNE 11 kt</dd></div><div><dt>Position</dt><dd id="positionValue">19.2°N, 66.4°E</dd></div></dl>
+            <form id="classifyForm" class="classification-form"><p class="eyebrow">WHAT-IF CLASSIFICATION</p><label>Wind (kt)<input id="windInput" type="number" value="105" min="1" max="250" /></label><label>Pressure (hPa)<input id="pressureInput" type="number" value="956" min="800" max="1050" /></label><button class="button" type="submit">Run classifier</button><output id="classificationOutput" aria-live="polite"></output></form>
+          </article>
+        </section>
+        <section class="layout-secondary">
+          <article class="panel chart-panel"><div class="panel-head"><div><p class="eyebrow">24-HOUR INTENSITY GUIDANCE</p><h2>Wind forecast <span id="chartCyclone">BIPARJOY</span></h2></div><span class="unit">KNOTS</span></div><div id="intensityChart" class="chart" role="img" aria-label="Observed and forecast maximum wind speed chart"></div></article>
+          <article id="model" class="panel attention-panel"><div class="panel-head"><div><p class="eyebrow">FUSIONCNN-V2.4</p><h2>Channel attention</h2></div><span id="confidenceValue" class="confidence">94% confidence</span></div><p class="muted">Relative contribution to the latest structural classification.</p><div id="attentionBars" class="attention-bars"></div></article>
+        </section>
+        <section class="layout-tertiary">
+          <article class="panel alerts-panel"><div class="panel-head"><div><p class="eyebrow">EVENT QUEUE</p><h2>Operational alerts</h2></div><div id="alertFilters" class="filter-group" aria-label="Filter alerts"><button class="filter active" data-severity="all">All</button><button class="filter" data-severity="critical">Critical</button><button class="filter" data-severity="high">High</button><button class="filter" data-severity="medium">Medium</button></div></div><div id="alerts" class="alerts"></div></article>
+          <article class="panel analyst-panel"><div class="panel-head"><div><p class="eyebrow">STREAMING AI ANALYST</p><h2>Cyclone brief</h2></div><span class="analyst-status"><i></i> READY</span></div><div id="chatLog" class="chat-log" aria-live="polite"><div class="analyst-message">Ask for a focused briefing on the selected system. The analyst will cite the latest fused operational signals.</div></div><form id="chatForm" class="chat-form"><input id="chatInput" aria-label="Ask the AI Cyclone Analyst" placeholder="Ask about intensity, track, or alerts…" autocomplete="off" /><button class="button" type="submit">Send</button></form></article>
+        </section>
+        <section id="sources" class="sources-section"><div class="section-title"><div><p class="eyebrow">INGESTION STATUS</p><h2>Multi-source data pipeline</h2></div></div><div id="sourceList" class="source-list"></div></section>
+        <section id="connections" class="panel connection-section" aria-labelledby="connectionTitle">
+          <div class="panel-head"><div><p class="eyebrow">PUBLIC AND CONFIGURABLE DATA</p><h2 id="connectionTitle">Live-source connections</h2></div><button id="refreshLive" class="button secondary">Refresh public tracks</button></div>
+          <div id="liveFeedStatus" class="live-status" role="status">Checking NOAA public active-track feed…</div>
+          <div id="liveTrackList" class="live-track-list" aria-live="polite"></div>
+          <div class="connector-grid">
+            <article class="connector"><span class="connector-kind">OPEN DOWNLOAD</span><h3>NOAA IBTrACS</h3><p>Historical labels plus active-track refresh. Use the North Indian Ocean subset for model training and validation.</p><a href="https://www.ncei.noaa.gov/products/international-best-track-archive" target="_blank" rel="noreferrer">Open data portal ↗</a></article>
+            <article class="connector"><span class="connector-kind">ACCOUNT REQUIRED</span><h3>ISRO MOSDAC</h3><p>INSAT imagery and Oceansat products. Credentials stay in the server-side MOSDAC client—not in this browser.</p><a href="https://mosdac.gov.in/signup/" target="_blank" rel="noreferrer">Create MOSDAC account ↗</a></article>
+            <article class="connector"><span class="connector-kind">OFFICIAL ADVISORY</span><h3>IMD / RSMC New Delhi</h3><p>Use bulletin-derived tracks and forecast details only as official-advisory data, separate from ML output.</p><a href="https://rsmcnewdelhi.imd.gov.in/" target="_blank" rel="noreferrer">Open RSMC New Delhi ↗</a></article>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
